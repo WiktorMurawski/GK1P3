@@ -1,9 +1,17 @@
-﻿using System.Windows.Forms.DataVisualization.Charting;
+﻿using System.Numerics;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GK1P3.Misc
 {
     internal static class Helpers
     {
+        public static byte Clamp<T>(T value) where T : INumber<T>
+        {
+            if (value.CompareTo(T.Zero) < 0) return 0;
+            if (value.CompareTo(T.CreateChecked(255)) > 0) return 255;
+            return byte.CreateChecked(value);
+        }
+
         public static Image LoadImageFromPath(string path)
         {
             return new Bitmap(path);
@@ -70,17 +78,17 @@ namespace GK1P3.Misc
 
             var axisX = chart.ChartAreas[0].AxisX;
             axisX.LabelStyle.Enabled = true;
-            int[] positions = { 0, 63, 127, 191, 255 };
-            foreach (int pos in positions)
-            {
-                CustomLabel label = new CustomLabel
-                {
-                    FromPosition = pos - 100,
-                    ToPosition = pos + 100,
-                    Text = pos.ToString()
-                };
-                axisX.CustomLabels.Add(label);
-            }
+            //int[] positions = { 0, 63, 127, 191, 255 };
+            //foreach (int pos in positions)
+            //{
+            //    CustomLabel label = new CustomLabel
+            //    {
+            //        FromPosition = pos - 100,
+            //        ToPosition = pos + 100,
+            //        Text = pos.ToString()
+            //    };
+            //    axisX.CustomLabels.Add(label);
+            //}
 
             Series s = new Series
             {
