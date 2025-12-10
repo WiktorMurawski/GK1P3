@@ -8,7 +8,10 @@ namespace GK1P3.Filters
     {
         public Color Apply(Color inputColor)
         {
-            byte gray = (byte)(0.299 * inputColor.R + 0.587 * inputColor.G + 0.114 * inputColor.B);
+            double redWeight = 0.299;
+            double greenWeight = 0.587;
+            double blueWeight = 0.114;
+            byte gray = (byte)(redWeight * inputColor.R + greenWeight * inputColor.G + blueWeight * inputColor.B);
             return Color.FromArgb(gray, gray, gray);
         }
     }

@@ -9,6 +9,5 @@ namespace GK1P3.Misc
         {
             return byte.CreateSaturating(value);
         }
-
     }
 }

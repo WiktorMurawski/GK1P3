@@ -6,17 +6,28 @@ namespace GK1P3
     public partial class MainWindowForm : Form
     {
         private IImageFilter _filter { get; set; } = new Identity();
-        private int _brushSize = 1;
-        Bitmap? _loadedBitmap = null;
+        private int _brushSize { get; set; } = 1;
+        Bitmap? _loadedBitmap { get; set; } = null;
 
         public MainWindowForm()
         {
             InitializeComponent();
             IntializeDefaults();
+
+            FunctionCurve_CurveEditorControl.CurveChanged += (s, e) =>
+            {
+                if (CustomFunction_RadioButton.Checked)
+                {
+                    var lookupTable = FunctionCurve_CurveEditorControl.GenerateLookupTable();
+                    _filter = new CustomCurve(lookupTable);
+                }
+            };
         }
 
         private void IntializeDefaults()
         {
+            _brushSize = BrushSize_TrackBar.Value;
+
             var resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
             var fileName = "lena.png";
             var fullPath = Path.Combine(resourcesPath, fileName);
@@ -48,9 +59,11 @@ namespace GK1P3
         private void ApplyFilter_Button_Click(object sender, EventArgs e)
         {
             if (_loadedBitmap is null) return;
+            Cursor.Current = Cursors.WaitCursor;
             _loadedBitmap = _filter.Apply(_loadedBitmap);
             CanvasPictureBox_PictureBox.Image = _loadedBitmap;
             PlotHistograms();
+            Cursor.Current = Cursors.Default;
         }
 
         private void BrushSize_TrackBar_Scroll(object sender, EventArgs e)
@@ -59,6 +72,7 @@ namespace GK1P3
             BrushSizeValue_Label.Text = $"{_brushSize}";
         }
 
+        #region Filters Radio Buttons
         private void None_RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (None_RadioButton.Checked && _filter is not Identity)
@@ -77,10 +91,109 @@ namespace GK1P3
 
         private void Grayscale_RadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if(Grayscale_RadioButton.Checked && _filter is not Grayscale)
+            if (Grayscale_RadioButton.Checked && _filter is not Grayscale)
             {
                 _filter = new Grayscale();
             }
         }
+
+        private void Sepia_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Sepia_RadioButton.Checked && _filter is not Sepia)
+            {
+                _filter = new Sepia();
+            }
+        }
+
+        private void Gamma_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Gamma_RadioButton.Checked && _filter is not Gamma)
+            {
+                _filter = new Gamma((double)Gamma_NumericUpDown.Value);
+            }
+        }
+
+        private void Gamma_NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Gamma_RadioButton.Checked)
+            {
+                _filter = new Gamma((double)Gamma_NumericUpDown.Value);
+            }
+        }
+
+        private void Contrast_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Contrast_RadioButton.Checked && _filter is not Contrast)
+            {
+                _filter = new Contrast((double)Contrast_NumericUpDown.Value);
+            }
+        }
+
+        private void Contrast_NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Contrast_RadioButton.Checked)
+            {
+                _filter = new Contrast((double)Contrast_NumericUpDown.Value);
+            }
+        }
+
+        private void Brightness_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Brightness_RadioButton.Checked && _filter is not Brightness)
+            {
+                _filter = new Brightness((double)Brightness_NumericUpDown.Value);
+            }
+        }
+
+        private void Brightness_NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Brightness_RadioButton.Checked)
+            {
+                _filter = new Brightness((double)Brightness_NumericUpDown.Value);
+            }
+        }
+
+        private void Saturation_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Saturation_RadioButton.Checked && _filter is not Saturation)
+            {
+                _filter = new Saturation((double)Saturation_NumericUpDown.Value);
+            }
+        }
+
+        private void Saturation_NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Saturation_RadioButton.Checked)
+            {
+                _filter = new Saturation((double)Saturation_NumericUpDown.Value);
+            }
+        }
+
+        private void Posterize_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Posterize_RadioButton.Checked && _filter is not Posterize)
+            {
+                _filter = new Posterize((int)Posterize_NumericUpDown.Value);
+            }
+
+        }
+
+        private void Posterize_NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (Posterize_RadioButton.Checked)
+            {
+                _filter = new Posterize((int)Posterize_NumericUpDown.Value);
+            }
+        }
+
+        private void CustomFunction_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CustomFunction_RadioButton.Checked)
+            {
+                var lookupTable = FunctionCurve_CurveEditorControl.GenerateLookupTable();
+                _filter = new CustomCurve(lookupTable);
+            }
+        }
+        #endregion
     }
 }
