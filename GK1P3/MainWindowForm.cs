@@ -20,22 +20,22 @@ namespace GK1P3
             var resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
             var fileName = "lena.png";
             var fullPath = Path.Combine(resourcesPath, fileName);
-            _loadedBitmap = Helpers.LoadImageFromPath(fullPath) as Bitmap;
+            _loadedBitmap = ImageLoading.LoadImageFromPath(fullPath) as Bitmap;
             CanvasPictureBox_PictureBox.Image = _loadedBitmap;
             PlotHistograms();
         }
 
         private void PlotHistograms()
         {
-            (var hR, var hG, var hB) = Helpers.GetHistograms(CanvasPictureBox_PictureBox.Image);
-            Helpers.PlotHistogram(ChartRed_Chart, hR, Color.Red, "Red");
-            Helpers.PlotHistogram(ChartGreen_Chart, hG, Color.Green, "Green");
-            Helpers.PlotHistogram(ChartBlue_Chart, hB, Color.Blue, "Blue");
+            (var hR, var hG, var hB) = Histograms.GetHistograms(CanvasPictureBox_PictureBox.Image);
+            Histograms.PlotHistogram(ChartRed_Chart, hR, Color.Red, "Red");
+            Histograms.PlotHistogram(ChartGreen_Chart, hG, Color.Green, "Green");
+            Histograms.PlotHistogram(ChartBlue_Chart, hB, Color.Blue, "Blue");
         }
 
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _loadedBitmap = Helpers.LoadImage() as Bitmap;
+            _loadedBitmap = ImageLoading.LoadImage();
             CanvasPictureBox_PictureBox.Image = _loadedBitmap;
             PlotHistograms();
         }
