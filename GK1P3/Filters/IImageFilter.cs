@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Text;
+﻿using System.Drawing.Imaging;
 
 namespace GK1P3.Filters
 {
     internal interface IImageFilter
     {
-        public Color Apply(Color inputColor);
-        public unsafe Bitmap Apply(Bitmap inputBitmap)
+        Color Apply(Color inputColor);
+        unsafe Bitmap Apply(Bitmap inputBitmap)
         {
             int width = inputBitmap.Width;
             int height = inputBitmap.Height;

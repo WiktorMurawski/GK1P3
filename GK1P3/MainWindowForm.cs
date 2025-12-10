@@ -7,7 +7,7 @@ namespace GK1P3
     {
         private IImageFilter _filter { get; set; } = new Identity();
         private int _brushSize { get; set; } = 1;
-        Bitmap? _loadedBitmap { get; set; } = null;
+        private Bitmap? _loadedBitmap { get; set; } = null;
 
         public MainWindowForm()
         {

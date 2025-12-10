@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GK1P3.Misc
 {

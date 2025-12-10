@@ -1,7 +1,4 @@
 ﻿using GK1P3.Misc;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GK1P3.Filters
 {

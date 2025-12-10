@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GK1P3.Misc
+﻿namespace GK1P3.Misc
 {
     internal static class ImageLoading
     {
