@@ -4,25 +4,11 @@ namespace GK1P3.Misc
 {
     internal static class Histograms
     {
-        public static (int[] R, int[] G, int[] B) GetHistograms(Image? image)
-        {
-            if (image is not Bitmap bitmap)
-            {
-                return (new int[256], new int[256], new int[256]);
-            }
-            return GetHistograms(bitmap);
-        }
-
-        public static (int[] R, int[] G, int[] B) GetHistograms(Bitmap? bitmap)
+        public static (int[] R, int[] G, int[] B) GetHistograms(Bitmap bitmap)
         {
             var histogramR = new int[256];
             var histogramG = new int[256];
             var histogramB = new int[256];
-
-            if (bitmap is null)
-            {
-                return (histogramR, histogramG, histogramB);
-            }
 
             for (int y = 0; y < bitmap.Height; y++)
             {

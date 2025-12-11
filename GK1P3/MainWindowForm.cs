@@ -27,6 +27,7 @@ namespace GK1P3
         private void IntializeDefaults()
         {
             _brushSize = BrushSize_TrackBar.Value;
+            BrushSizeValue_Label.Text = $"{_brushSize}";
 
             try
             {

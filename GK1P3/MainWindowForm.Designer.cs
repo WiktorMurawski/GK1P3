@@ -444,7 +444,7 @@ namespace GK1P3
             BrushSize_TrackBar.Name = "BrushSize_TrackBar";
             BrushSize_TrackBar.Size = new Size(220, 45);
             BrushSize_TrackBar.TabIndex = 1;
-            BrushSize_TrackBar.Value = 1;
+            BrushSize_TrackBar.Value = 20;
             BrushSize_TrackBar.Scroll += BrushSize_TrackBar_Scroll;
             // 
             // ApplyFilter_Button
