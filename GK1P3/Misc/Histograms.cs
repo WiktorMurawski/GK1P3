@@ -8,16 +8,22 @@ namespace GK1P3.Misc
         {
             if (image is not Bitmap bitmap)
             {
-                throw new ArgumentException("Image must be a Bitmap.", nameof(image));
+                return (new int[256], new int[256], new int[256]);
             }
             return GetHistograms(bitmap);
         }
 
-        public static (int[] R, int[] G, int[] B) GetHistograms(Bitmap bitmap)
+        public static (int[] R, int[] G, int[] B) GetHistograms(Bitmap? bitmap)
         {
             var histogramR = new int[256];
             var histogramG = new int[256];
             var histogramB = new int[256];
+
+            if (bitmap is null)
+            {
+                return (histogramR, histogramG, histogramB);
+            }
+
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
@@ -43,17 +49,6 @@ namespace GK1P3.Misc
 
             var axisX = chart.ChartAreas[0].AxisX;
             axisX.LabelStyle.Enabled = true;
-            //int[] positions = { 0, 63, 127, 191, 255 };
-            //foreach (int pos in positions)
-            //{
-            //    CustomLabel label = new CustomLabel
-            //    {
-            //        FromPosition = pos - 100,
-            //        ToPosition = pos + 100,
-            //        Text = pos.ToString()
-            //    };
-            //    axisX.CustomLabels.Add(label);
-            //}
 
             Series s = new Series
             {

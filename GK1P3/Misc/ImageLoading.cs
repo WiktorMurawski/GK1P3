@@ -2,9 +2,13 @@
 {
     internal static class ImageLoading
     {
-        public static Image LoadImageFromPath(string path)
+        public static Bitmap? LoadImageFromPath(string path)
         {
-            return new Bitmap(path);
+            if (!File.Exists(path))
+                return null;
+
+            using var temp = new Bitmap(path);
+            return new Bitmap(temp);
         }
 
         public static Bitmap? LoadImage()
@@ -15,8 +19,7 @@
             {
                 try
                 {
-                    using var temp = new Bitmap(ofd.FileName);
-                    return new Bitmap(temp);
+                    return LoadImageFromPath(ofd.FileName);
                 }
                 catch
                 {

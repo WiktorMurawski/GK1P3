@@ -28,26 +28,49 @@ namespace GK1P3
         {
             _brushSize = BrushSize_TrackBar.Value;
 
-            var resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
-            var fileName = "lena.png";
-            var fullPath = Path.Combine(resourcesPath, fileName);
-            _loadedBitmap = ImageLoading.LoadImageFromPath(fullPath) as Bitmap;
-            CanvasPictureBox_PictureBox.Image = _loadedBitmap;
-            PlotHistograms();
+            try
+            {
+                var resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
+                var fileName = "lena.png";
+                var fullPath = Path.Combine(resourcesPath, fileName);
+                _loadedBitmap = ImageLoading.LoadImageFromPath(fullPath);
+                CanvasPictureBox_PictureBox.Image = _loadedBitmap;
+            }
+            finally
+            {
+                PlotHistograms();
+            }
         }
 
         private void PlotHistograms()
         {
-            (var hR, var hG, var hB) = Histograms.GetHistograms(CanvasPictureBox_PictureBox.Image);
+            if (_loadedBitmap is null)
+            {
+                ClearHistograms();
+                return;
+            }
+
+            (var hR, var hG, var hB) = Histograms.GetHistograms(_loadedBitmap);
             Histograms.PlotHistogram(ChartRed_Chart, hR, Color.Red, "Red");
             Histograms.PlotHistogram(ChartGreen_Chart, hG, Color.Green, "Green");
             Histograms.PlotHistogram(ChartBlue_Chart, hB, Color.Blue, "Blue");
         }
 
+        private void ClearHistograms()
+        {
+            ChartRed_Chart.Series.Clear();
+            ChartGreen_Chart.Series.Clear();
+            ChartBlue_Chart.Series.Clear();
+        }
+
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _loadedBitmap = ImageLoading.LoadImage();
-            CanvasPictureBox_PictureBox.Image = _loadedBitmap;
+            var temp = ImageLoading.LoadImage();
+            if (temp != null)
+            {
+                _loadedBitmap = temp;
+                CanvasPictureBox_PictureBox.Image = _loadedBitmap;
+            }
             PlotHistograms();
         }
 
