@@ -204,7 +204,7 @@ namespace GK1P3
         }
         #endregion
 
-        #region Brush drawing
+        #region Drawing with a brush
         private bool _drawing = false;
         private HashSet<(int, int)> _touchedPixels = new();
         private Point _lastBrushPosition = Point.Empty;
@@ -226,35 +226,36 @@ namespace GK1P3
             {
                 _loadedBitmap = _filter.ApplyCircle(_loadedBitmap, e.X, e.Y, _brushSize, _touchedPixels);
 
-                Rectangle invalidRect = new Rectangle(e.X - _brushSize - 5, e.Y - _brushSize - 5, _brushSize * 2 + 11, _brushSize * 2 + 11);
-                CanvasPictureBox_PictureBox.Invalidate(invalidRect);
+                int margin = 5;
+                CanvasPictureBox_PictureBox.Invalidate(
+                    new Rectangle(e.X - _brushSize - margin, e.Y - _brushSize - margin, _brushSize * 2 + 2 * margin + 1, _brushSize * 2 + 2 * margin + 1));
             }
             else
             {
-                Rectangle cursorRect = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
-
                 if (_lastBrushPosition != Point.Empty)
                 {
-                    Rectangle oldCursorRect = new Rectangle(_lastBrushPosition.X - _brushSize - 1, _lastBrushPosition.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
-                    CanvasPictureBox_PictureBox.Invalidate(oldCursorRect);
+                    CanvasPictureBox_PictureBox.Invalidate(
+                        new Rectangle(_lastBrushPosition.X - _brushSize - 1, _lastBrushPosition.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2));
                 }
 
-                CanvasPictureBox_PictureBox.Invalidate(cursorRect);
+                CanvasPictureBox_PictureBox.Invalidate(
+                    new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2));
                 _lastBrushPosition = e.Location;
             }
         }
 
         private void CanvasPictureBox_PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
+            if (_loadedBitmap is null) return;
+
             _drawing = true;
             _touchedPixels.Clear();
-
-            Rectangle rectangle = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
 
             if (_loadedBitmap is not null)
             {
                 _loadedBitmap = _filter.ApplyCircle(_loadedBitmap, e.X, e.Y, _brushSize, _touchedPixels);
-                CanvasPictureBox_PictureBox.Invalidate(rectangle);
+                CanvasPictureBox_PictureBox.Invalidate(
+                    new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2));
             }
         }
 
@@ -263,10 +264,10 @@ namespace GK1P3
             _drawing = false;
             _touchedPixels.Clear();
 
-            Rectangle rectangle = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
             if (_loadedBitmap is not null)
             {
-                CanvasPictureBox_PictureBox.Invalidate(rectangle);
+                CanvasPictureBox_PictureBox.Invalidate(
+                    new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2));
             }
 
             PlotHistograms();

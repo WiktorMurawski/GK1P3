@@ -1,4 +1,6 @@
-﻿namespace GK1P3.Filters
+﻿using System.Runtime.CompilerServices;
+
+namespace GK1P3.Filters
 {
     internal class CustomCurve : IImageFilter
     {
@@ -12,6 +14,7 @@
             _lookupTable = lookupTable;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
             r = _lookupTable[r];

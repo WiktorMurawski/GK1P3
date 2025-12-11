@@ -1,4 +1,5 @@
 ﻿using GK1P3.Misc;
+using System.Runtime.CompilerServices;
 
 namespace GK1P3.Filters
 {
@@ -11,6 +12,7 @@ namespace GK1P3.Filters
             _adjustment = (int)((adjustment - 1.0) * 255.0);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
             r = Helpers.Clamp(r + _adjustment);

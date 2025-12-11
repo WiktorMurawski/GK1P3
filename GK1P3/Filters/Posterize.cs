@@ -1,4 +1,6 @@
-﻿namespace GK1P3.Filters
+﻿using System.Runtime.CompilerServices;
+
+namespace GK1P3.Filters
 {
     internal class Posterize : IImageFilter
     {
@@ -9,6 +11,7 @@
             _levels = Math.Max(2, Math.Min(256, levels));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
             int step = 256 / _levels;

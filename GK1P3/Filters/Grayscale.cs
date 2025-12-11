@@ -1,4 +1,6 @@
-﻿namespace GK1P3.Filters
+﻿using System.Runtime.CompilerServices;
+
+namespace GK1P3.Filters
 {
     internal class Grayscale : IImageFilter
     {
@@ -6,6 +8,7 @@
         private const double _greenWeight = 0.587;
         private const double _blueWeight = 0.114;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
             byte gray = (byte)(_redWeight * r + _greenWeight * g + _blueWeight * b);

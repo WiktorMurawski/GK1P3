@@ -1,16 +1,17 @@
 ﻿using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
 
 namespace GK1P3.Filters
 {
     internal interface IImageFilter
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void ApplyBytes(ref byte r, ref byte g, ref byte b);
 
         unsafe Bitmap Apply(Bitmap inputBitmap)
         {
             int width = inputBitmap.Width;
             int height = inputBitmap.Height;
-
             Rectangle rect = new Rectangle(0, 0, width, height);
             BitmapData bitmapData = inputBitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
@@ -22,21 +23,22 @@ namespace GK1P3.Filters
 
                 for (int y = 0; y < height; y++)
                 {
-                    byte* row = scan0 + (y * stride);
+                    byte* pixel = scan0 + (y * stride);
+                    byte* rowEnd = pixel + (width * 3);
 
-                    for (int x = 0; x < width; x++)
+                    while (pixel < rowEnd)
                     {
-                        int offset = x * bytesPerPixel;
-
-                        byte b = row[offset];
-                        byte g = row[offset + 1];
-                        byte r = row[offset + 2];
+                        byte b = pixel[0];
+                        byte g = pixel[1];
+                        byte r = pixel[2];
 
                         ApplyBytes(ref r, ref g, ref b);
 
-                        row[offset] = b;
-                        row[offset + 1] = g;
-                        row[offset + 2] = r;
+                        pixel[0] = b;
+                        pixel[1] = g;
+                        pixel[2] = r;
+
+                        pixel += bytesPerPixel;
                     }
                 }
             }
@@ -61,8 +63,8 @@ namespace GK1P3.Filters
             Rectangle rect = new Rectangle(0, 0, width, height);
             BitmapData bitmapData = inputBitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-            int maxy = Math.Min(height, y0 + radius);
-            int maxx = Math.Min(width, x0 + radius);
+            int maxy = Math.Min(height, y0 + radius + 1);
+            int maxx = Math.Min(width, x0 + radius + 1);
             int miny = Math.Max(0, y0 - radius);
             int minx = Math.Max(0, x0 - radius);
 
@@ -74,32 +76,31 @@ namespace GK1P3.Filters
 
                 for (int y = miny; y < maxy; y++)
                 {
-                    byte* row = scan0 + (y * stride);
                     int dy = y - y0;
-                    int dy2 = dy * dy;
+                    int dySquared = dy * dy;
+                    byte* row = scan0 + (y * stride);
 
                     for (int x = minx; x < maxx; x++)
                     {
-                        if (touchedPixels.Contains((x, y)))
+                        int dx = x - x0;
+
+                        if (dx * dx + dySquared > radius2)
                             continue;
 
-                        int dx = (int)(x - x0);
-                        if (dx * dx + dy2 > radius2)
+                        if (!touchedPixels.Add((x, y)))
                             continue;
 
-                        touchedPixels.Add((x, y));
+                        byte* pixel = row + (x * bytesPerPixel);
 
-                        int offset = x * bytesPerPixel;
-
-                        byte b = row[offset];
-                        byte g = row[offset + 1];
-                        byte r = row[offset + 2];
+                        byte b = pixel[0];
+                        byte g = pixel[1];
+                        byte r = pixel[2];
 
                         ApplyBytes(ref r, ref g, ref b);
 
-                        row[offset] = b;
-                        row[offset + 1] = g;
-                        row[offset + 2] = r;
+                        pixel[0] = b;
+                        pixel[1] = g;
+                        pixel[2] = r;
                     }
                 }
             }
@@ -110,20 +111,5 @@ namespace GK1P3.Filters
 
             return inputBitmap;
         }
-        //public Bitmap Apply(Bitmap inputBitmap)
-        //{
-        //    int width = inputBitmap.Width;
-        //    int height = inputBitmap.Height;
-        //    for (int y = 0; y < height; y++)
-        //    {
-        //        for (int x = 0; x < width; x++)
-        //        {
-        //            Color originalColor = inputBitmap.GetPixel(x, y);
-        //            Color newColor = Apply(originalColor);
-        //            inputBitmap.SetPixel(x, y, newColor);
-        //        }
-        //    }
-        //    return inputBitmap;
-        //}
     }
 }

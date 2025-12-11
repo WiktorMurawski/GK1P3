@@ -1,9 +1,11 @@
 ﻿using GK1P3.Misc;
+using System.Runtime.CompilerServices;
 
 namespace GK1P3.Filters
 {
     internal class Sepia : IImageFilter
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
             int tr = (int)(0.393 * r + 0.769 * g + 0.189 * b);
