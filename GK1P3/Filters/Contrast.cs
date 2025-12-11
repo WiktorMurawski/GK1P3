@@ -11,12 +11,11 @@ namespace GK1P3.Filters
             _factor = factor;
         }
 
-        public Color Apply(Color inputColor)
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
-            byte r = Helpers.Clamp((int)((inputColor.R - 128) * _factor + 128));
-            byte g = Helpers.Clamp((int)((inputColor.G - 128) * _factor + 128));
-            byte b = Helpers.Clamp((int)((inputColor.B - 128) * _factor + 128));
-            return Color.FromArgb(r, g, b);
+            r = Helpers.Clamp((int)((r - 128) * _factor + 128));
+            g = Helpers.Clamp((int)((g - 128) * _factor + 128));
+            b = Helpers.Clamp((int)((b - 128) * _factor + 128));
         }
     }
 }

@@ -2,13 +2,16 @@
 {
     internal class Grayscale : IImageFilter
     {
-        public Color Apply(Color inputColor)
+        private const double _redWeight = 0.299;
+        private const double _greenWeight = 0.587;
+        private const double _blueWeight = 0.114;
+
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
-            double redWeight = 0.299;
-            double greenWeight = 0.587;
-            double blueWeight = 0.114;
-            byte gray = (byte)(redWeight * inputColor.R + greenWeight * inputColor.G + blueWeight * inputColor.B);
-            return Color.FromArgb(gray, gray, gray);
+            byte gray = (byte)(_redWeight * r + _greenWeight * g + _blueWeight * b);
+            r = gray;
+            g = gray;
+            b = gray;
         }
     }
 }

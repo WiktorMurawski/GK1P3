@@ -12,13 +12,11 @@
             _lookupTable = lookupTable;
         }
 
-        public Color Apply(Color inputColor)
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
-            return Color.FromArgb(
-                _lookupTable[inputColor.R],
-                _lookupTable[inputColor.G],
-                _lookupTable[inputColor.B]
-            );
+            r = _lookupTable[r];
+            g = _lookupTable[g];
+            b = _lookupTable[b];
         }
     }
 }

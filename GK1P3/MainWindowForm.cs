@@ -153,22 +153,6 @@ namespace GK1P3
             }
         }
 
-        private void Saturation_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Saturation_RadioButton.Checked && _filter is not Saturation)
-            {
-                _filter = new Saturation((double)Saturation_NumericUpDown.Value);
-            }
-        }
-
-        private void Saturation_NumericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (Saturation_RadioButton.Checked)
-            {
-                _filter = new Saturation((double)Saturation_NumericUpDown.Value);
-            }
-        }
-
         private void Posterize_RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (Posterize_RadioButton.Checked && _filter is not Posterize)
@@ -193,6 +177,75 @@ namespace GK1P3
                 var lookupTable = FunctionCurve_CurveEditorControl.GenerateLookupTable();
                 _filter = new CustomCurve(lookupTable);
             }
+        }
+        #endregion
+
+        #region Brush drawing
+        private bool _drawing = false;
+        private HashSet<(int, int)> _touchedPixels = new();
+        private Point _lastBrushPosition = Point.Empty;
+
+        private void CanvasPictureBox_PictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            Point mouse = CanvasPictureBox_PictureBox.PointToClient(Cursor.Position);
+
+            if (mouse.X >= 0 && mouse.X < CanvasPictureBox_PictureBox.Width && mouse.Y >= 0 && mouse.Y < CanvasPictureBox_PictureBox.Height)
+            {
+                using Pen pen = new(Color.Black);
+                e.Graphics.DrawEllipse(pen, mouse.X - _brushSize, mouse.Y - _brushSize, _brushSize * 2, _brushSize * 2);
+            }
+        }
+
+        private void CanvasPictureBox_PictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_drawing && _loadedBitmap is not null)
+            {
+                _loadedBitmap = _filter.ApplyCircle(_loadedBitmap, e.X, e.Y, _brushSize, _touchedPixels);
+
+                Rectangle invalidRect = new Rectangle(e.X - _brushSize - 5, e.Y - _brushSize - 5, _brushSize * 2 + 11, _brushSize * 2 + 11);
+                CanvasPictureBox_PictureBox.Invalidate(invalidRect);
+            }
+            else
+            {
+                Rectangle cursorRect = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
+
+                if (_lastBrushPosition != Point.Empty)
+                {
+                    Rectangle oldCursorRect = new Rectangle(_lastBrushPosition.X - _brushSize - 1, _lastBrushPosition.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
+                    CanvasPictureBox_PictureBox.Invalidate(oldCursorRect);
+                }
+
+                CanvasPictureBox_PictureBox.Invalidate(cursorRect);
+                _lastBrushPosition = e.Location;
+            }
+        }
+
+        private void CanvasPictureBox_PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            _drawing = true;
+            _touchedPixels.Clear();
+
+            Rectangle rectangle = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
+
+            if (_loadedBitmap is not null)
+            {
+                _loadedBitmap = _filter.ApplyCircle(_loadedBitmap, e.X, e.Y, _brushSize, _touchedPixels);
+                CanvasPictureBox_PictureBox.Invalidate(rectangle);
+            }
+        }
+
+        private void CanvasPictureBox_PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            _drawing = false;
+            _touchedPixels.Clear();
+
+            Rectangle rectangle = new Rectangle(e.X - _brushSize - 1, e.Y - _brushSize - 1, _brushSize * 2 + 2, _brushSize * 2 + 2);
+            if (_loadedBitmap is not null)
+            {
+                CanvasPictureBox_PictureBox.Invalidate(rectangle);
+            }
+
+            PlotHistograms();
         }
         #endregion
     }

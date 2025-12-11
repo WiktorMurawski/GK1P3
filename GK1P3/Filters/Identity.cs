@@ -2,9 +2,6 @@
 {
     internal class Identity : IImageFilter
     {
-        public Color Apply(Color inputColor)
-        {
-            return inputColor;
-        }
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b) { }
     }
 }

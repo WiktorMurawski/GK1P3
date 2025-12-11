@@ -49,8 +49,6 @@ namespace GK1P3
             CustomFunction_RadioButton = new RadioButton();
             Posterize_NumericUpDown = new NumericUpDown();
             Posterize_RadioButton = new RadioButton();
-            Saturation_NumericUpDown = new NumericUpDown();
-            Saturation_RadioButton = new RadioButton();
             Brightness_NumericUpDown = new NumericUpDown();
             Contrast_NumericUpDown = new NumericUpDown();
             Brightness_RadioButton = new RadioButton();
@@ -79,7 +77,6 @@ namespace GK1P3
             RightSide_SplitContainer.SuspendLayout();
             FilterSelection_GroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Posterize_NumericUpDown).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)Saturation_NumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Brightness_NumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Contrast_NumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Gamma_NumericUpDown).BeginInit();
@@ -188,6 +185,10 @@ namespace GK1P3
             CanvasPictureBox_PictureBox.Size = new Size(650, 537);
             CanvasPictureBox_PictureBox.TabIndex = 0;
             CanvasPictureBox_PictureBox.TabStop = false;
+            CanvasPictureBox_PictureBox.Paint += CanvasPictureBox_PictureBox_Paint;
+            CanvasPictureBox_PictureBox.MouseDown += CanvasPictureBox_PictureBox_MouseDown;
+            CanvasPictureBox_PictureBox.MouseMove += CanvasPictureBox_PictureBox_MouseMove;
+            CanvasPictureBox_PictureBox.MouseUp += CanvasPictureBox_PictureBox_MouseUp;
             // 
             // RightSide_SplitContainer
             // 
@@ -221,11 +222,11 @@ namespace GK1P3
             // FunctionCurve_CurveEditorControl
             // 
             FunctionCurve_CurveEditorControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            FunctionCurve_CurveEditorControl.Location = new Point(-1, 368);
+            FunctionCurve_CurveEditorControl.Location = new Point(-1, 343);
             FunctionCurve_CurveEditorControl.Margin = new Padding(0);
             FunctionCurve_CurveEditorControl.MinimumSize = new Size(50, 50);
             FunctionCurve_CurveEditorControl.Name = "FunctionCurve_CurveEditorControl";
-            FunctionCurve_CurveEditorControl.Size = new Size(227, 169);
+            FunctionCurve_CurveEditorControl.Size = new Size(227, 194);
             FunctionCurve_CurveEditorControl.TabIndex = 5;
             FunctionCurve_CurveEditorControl.Text = "curveEditorControl1";
             // 
@@ -235,8 +236,6 @@ namespace GK1P3
             FilterSelection_GroupBox.Controls.Add(CustomFunction_RadioButton);
             FilterSelection_GroupBox.Controls.Add(Posterize_NumericUpDown);
             FilterSelection_GroupBox.Controls.Add(Posterize_RadioButton);
-            FilterSelection_GroupBox.Controls.Add(Saturation_NumericUpDown);
-            FilterSelection_GroupBox.Controls.Add(Saturation_RadioButton);
             FilterSelection_GroupBox.Controls.Add(Brightness_NumericUpDown);
             FilterSelection_GroupBox.Controls.Add(Contrast_NumericUpDown);
             FilterSelection_GroupBox.Controls.Add(Brightness_RadioButton);
@@ -249,7 +248,7 @@ namespace GK1P3
             FilterSelection_GroupBox.Controls.Add(None_RadioButton);
             FilterSelection_GroupBox.Location = new Point(3, 93);
             FilterSelection_GroupBox.Name = "FilterSelection_GroupBox";
-            FilterSelection_GroupBox.Size = new Size(220, 269);
+            FilterSelection_GroupBox.Size = new Size(220, 247);
             FilterSelection_GroupBox.TabIndex = 4;
             FilterSelection_GroupBox.TabStop = false;
             FilterSelection_GroupBox.Text = "Selected Filter";
@@ -257,7 +256,7 @@ namespace GK1P3
             // CustomFunction_RadioButton
             // 
             CustomFunction_RadioButton.AutoSize = true;
-            CustomFunction_RadioButton.Location = new Point(5, 247);
+            CustomFunction_RadioButton.Location = new Point(5, 222);
             CustomFunction_RadioButton.Name = "CustomFunction_RadioButton";
             CustomFunction_RadioButton.Size = new Size(115, 19);
             CustomFunction_RadioButton.TabIndex = 13;
@@ -269,7 +268,7 @@ namespace GK1P3
             // Posterize_NumericUpDown
             // 
             Posterize_NumericUpDown.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            Posterize_NumericUpDown.Location = new Point(170, 222);
+            Posterize_NumericUpDown.Location = new Point(170, 197);
             Posterize_NumericUpDown.Maximum = new decimal(new int[] { 256, 0, 0, 0 });
             Posterize_NumericUpDown.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
             Posterize_NumericUpDown.Name = "Posterize_NumericUpDown";
@@ -281,7 +280,7 @@ namespace GK1P3
             // Posterize_RadioButton
             // 
             Posterize_RadioButton.AutoSize = true;
-            Posterize_RadioButton.Location = new Point(5, 222);
+            Posterize_RadioButton.Location = new Point(5, 197);
             Posterize_RadioButton.Name = "Posterize_RadioButton";
             Posterize_RadioButton.Size = new Size(72, 19);
             Posterize_RadioButton.TabIndex = 12;
@@ -290,42 +289,17 @@ namespace GK1P3
             Posterize_RadioButton.UseVisualStyleBackColor = true;
             Posterize_RadioButton.CheckedChanged += Posterize_RadioButton_CheckedChanged;
             // 
-            // Saturation_NumericUpDown
-            // 
-            Saturation_NumericUpDown.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            Saturation_NumericUpDown.DecimalPlaces = 2;
-            Saturation_NumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
-            Saturation_NumericUpDown.Location = new Point(170, 197);
-            Saturation_NumericUpDown.Maximum = new decimal(new int[] { 20, 0, 0, 65536 });
-            Saturation_NumericUpDown.Minimum = new decimal(new int[] { 1, 0, 0, 131072 });
-            Saturation_NumericUpDown.Name = "Saturation_NumericUpDown";
-            Saturation_NumericUpDown.Size = new Size(50, 23);
-            Saturation_NumericUpDown.TabIndex = 11;
-            Saturation_NumericUpDown.Value = new decimal(new int[] { 1, 0, 0, 131072 });
-            // 
-            // Saturation_RadioButton
-            // 
-            Saturation_RadioButton.AutoSize = true;
-            Saturation_RadioButton.Location = new Point(5, 197);
-            Saturation_RadioButton.Name = "Saturation_RadioButton";
-            Saturation_RadioButton.Size = new Size(79, 19);
-            Saturation_RadioButton.TabIndex = 10;
-            Saturation_RadioButton.TabStop = true;
-            Saturation_RadioButton.Text = "Saturation";
-            Saturation_RadioButton.UseVisualStyleBackColor = true;
-            Saturation_RadioButton.CheckedChanged += Saturation_RadioButton_CheckedChanged;
-            // 
             // Brightness_NumericUpDown
             // 
             Brightness_NumericUpDown.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Brightness_NumericUpDown.DecimalPlaces = 2;
             Brightness_NumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
             Brightness_NumericUpDown.Location = new Point(170, 172);
-            Brightness_NumericUpDown.Maximum = new decimal(new int[] { 10, 0, 0, 65536 });
-            Brightness_NumericUpDown.Minimum = new decimal(new int[] { 10, 0, 0, -2147418112 });
+            Brightness_NumericUpDown.Maximum = new decimal(new int[] { 20, 0, 0, 65536 });
             Brightness_NumericUpDown.Name = "Brightness_NumericUpDown";
             Brightness_NumericUpDown.Size = new Size(50, 23);
             Brightness_NumericUpDown.TabIndex = 9;
+            Brightness_NumericUpDown.Value = new decimal(new int[] { 10, 0, 0, 65536 });
             Brightness_NumericUpDown.ValueChanged += Brightness_NumericUpDown_ValueChanged;
             // 
             // Contrast_NumericUpDown
@@ -465,7 +439,7 @@ namespace GK1P3
             // 
             BrushSize_TrackBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             BrushSize_TrackBar.Location = new Point(3, 57);
-            BrushSize_TrackBar.Maximum = 30;
+            BrushSize_TrackBar.Maximum = 50;
             BrushSize_TrackBar.Minimum = 1;
             BrushSize_TrackBar.Name = "BrushSize_TrackBar";
             BrushSize_TrackBar.Size = new Size(220, 45);
@@ -528,7 +502,6 @@ namespace GK1P3
             FilterSelection_GroupBox.ResumeLayout(false);
             FilterSelection_GroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Posterize_NumericUpDown).EndInit();
-            ((System.ComponentModel.ISupportInitialize)Saturation_NumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)Brightness_NumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)Contrast_NumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)Gamma_NumericUpDown).EndInit();
@@ -569,8 +542,6 @@ namespace GK1P3
         private RadioButton Contrast_RadioButton;
         private NumericUpDown Brightness_NumericUpDown;
         private RadioButton Brightness_RadioButton;
-        private NumericUpDown Saturation_NumericUpDown;
-        private RadioButton Saturation_RadioButton;
         private NumericUpDown Posterize_NumericUpDown;
         private RadioButton Posterize_RadioButton;
         private RadioButton CustomFunction_RadioButton;

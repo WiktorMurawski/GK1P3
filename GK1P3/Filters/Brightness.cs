@@ -6,17 +6,16 @@ namespace GK1P3.Filters
     {
         private readonly int _adjustment;
 
-        public Brightness(double adjustment) // -1.00 to 1.00
+        public Brightness(double adjustment) // 0.00 to 2.00
         {
-            _adjustment = (int)(adjustment * 255.0);
+            _adjustment = (int)((adjustment - 1.0) * 255.0);
         }
 
-        public Color Apply(Color inputColor)
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
-            byte r = Helpers.Clamp(inputColor.R + _adjustment);
-            byte g = Helpers.Clamp(inputColor.G + _adjustment);
-            byte b = Helpers.Clamp(inputColor.B + _adjustment);
-            return Color.FromArgb(r, g, b);
+            r = Helpers.Clamp(r + _adjustment);
+            g = Helpers.Clamp(g + _adjustment);
+            b = Helpers.Clamp(b + _adjustment);
         }
     }
 }

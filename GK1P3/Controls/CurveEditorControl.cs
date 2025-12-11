@@ -92,7 +92,7 @@ namespace GK1P3.Controls
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             // Draw background
-            g.Clear(Color.FromArgb(30, 30, 30));
+            g.Clear(Color.White);
 
             // Draw grid
             using (var gridPen = new Pen(Color.FromArgb(50, 50, 50)))
@@ -251,8 +251,6 @@ namespace GK1P3.Controls
         }
 
         // Event for when curve changes
-        [Category("Action")]
-        [Description("Occurs when the curve is modified by adding, removing, or moving control points")]
         public event EventHandler? CurveChanged;
 
         protected virtual void OnCurveChanged()

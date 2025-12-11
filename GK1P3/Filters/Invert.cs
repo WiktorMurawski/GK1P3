@@ -2,12 +2,11 @@
 {
     internal class Invert : IImageFilter
     {
-        public Color Apply(Color inputColor)
+        public void ApplyBytes(ref byte r, ref byte g, ref byte b)
         {
-            byte r = (byte)(255 - inputColor.R);
-            byte g = (byte)(255 - inputColor.G);
-            byte b = (byte)(255 - inputColor.B);
-            return Color.FromArgb(r, g, b);
+            r = (byte)(255 - r);
+            g = (byte)(255 - g);
+            b = (byte)(255 - b);
         }
     }
 }
