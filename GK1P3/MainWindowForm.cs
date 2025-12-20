@@ -5,7 +5,7 @@ namespace GK1P3
 {
     public partial class MainWindowForm : Form
     {
-        private IImageFilter _filter { get; set; } = new Identity();
+        private IImageFilter _filter { get; set; } = new None();
         private int _brushSize { get; set; } = 1;
         private Bitmap? _loadedBitmap { get; set; } = null;
 
@@ -99,9 +99,9 @@ namespace GK1P3
         #region Filters Radio Buttons
         private void None_RadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (None_RadioButton.Checked && _filter is not Identity)
+            if (None_RadioButton.Checked && _filter is not None)
             {
-                _filter = new Identity();
+                _filter = new None();
             }
         }
 

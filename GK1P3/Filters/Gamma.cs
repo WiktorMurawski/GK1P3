@@ -5,7 +5,7 @@ namespace GK1P3.Filters
 {
     internal class Gamma : IImageFilter
     {
-        private double _gamma;
+        private readonly double _gamma;
         private readonly byte[] _lookupTable = new byte[256];
 
         public Gamma(double gamma) // 0.01 to 5.00

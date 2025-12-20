@@ -12,7 +12,6 @@ namespace GK1P3.Controls
         private List<PointF> _controlPoints;
         private int _draggedPointIndex = -1;
         private const int PointRadius = 4;
-        private const int GridSpacing = 32; // 256/8 = 32 for 8 grid lines
 
         public CurveEditorControl()
         {
